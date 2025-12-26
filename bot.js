@@ -217,13 +217,13 @@ app.listen(PORT, () => {
 });
 ```
 
-4. Нажмите **Commit changes** → **Commit changes**
+5. Нажмите **Commit changes** → **Commit changes**
 
-**Файл 3: .gitignore**
-1. Нажмите **Add file** → **Create new file**
-2. Имя файла: `.gitignore`
-3. Вставьте:
+---
+
+После этого Railway автоматически пересоберёт проект (подождите 1-2 минуты).
+
+Затем проверьте логи снова - ошибка должна исчезнуть, и вы увидите:
 ```
-node_modules/
-.env
-*.log
+BitTap bot running on port 3000
+Database initialized successfully
