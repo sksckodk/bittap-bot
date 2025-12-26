@@ -16,6 +16,10 @@
     
     <script type="text/babel">
         const { useState, useEffect } = React;
+        
+        // ВАЖНО: Замените на ваш URL из Railway (без https://)
+        const API_URL = 'bittap-bot-production.up.railway.app';
+        
         const Coins = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>;
         const Zap = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
         const Trophy = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
@@ -24,6 +28,7 @@
         const TrendingUp = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
 
         function BitTapGame() {
+          const [userId, setUserId] = useState(null);
           const [coins, setCoins] = useState(0);
           const [totalCoins, setTotalCoins] = useState(0);
           const [clickPower, setClickPower] = useState(1);
@@ -34,7 +39,58 @@
           const [activeTab, setActiveTab] = useState('mine');
           const [clickAnimation, setClickAnimation] = useState(false);
           const [floatingCoins, setFloatingCoins] = useState([]);
+          const [leaderboard, setLeaderboard] = useState([]);
+          const [loading, setLoading] = useState(true);
 
+          // Инициализация Telegram WebApp
+          useEffect(() => {
+            const tg = window.Telegram.WebApp;
+            tg.ready();
+            tg.expand();
+            
+            const user = tg.initDataUnsafe?.user;
+            if (user) {
+              setUserId(user.id);
+              loadUserData(user.id);
+            } else {
+              // Для тестирования без Telegram
+              setUserId(123456);
+              loadUserData(123456);
+            }
+          }, []);
+
+          // Загрузка данных пользователя
+          const loadUserData = async (uid) => {
+            try {
+              const response = await fetch(`${API_URL}/api/user/${uid}`);
+              const data = await response.json();
+              
+              if (data.user_id) {
+                setCoins(data.coins || 0);
+                setTotalCoins(data.total_coins || 0);
+                setClickPower(data.click_power || 1);
+                setBoostLevel(data.boost_level || 1);
+                setEnergy(data.energy || 1000);
+              }
+              setLoading(false);
+            } catch (error) {
+              console.error('Error loading user data:', error);
+              setLoading(false);
+            }
+          };
+
+          // Загрузка лидерборда
+          const loadLeaderboard = async () => {
+            try {
+              const response = await fetch(`${API_URL}/api/leaderboard`);
+              const data = await response.json();
+              setLeaderboard(data);
+            } catch (error) {
+              console.error('Error loading leaderboard:', error);
+            }
+          };
+
+          // Восстановление энергии
           useEffect(() => {
             const interval = setInterval(() => {
               setEnergy(prev => Math.min(prev + 1, maxEnergy));
@@ -42,10 +98,14 @@
             return () => clearInterval(interval);
           }, [maxEnergy]);
 
-          const handleTap = (e) => {
-            if (energy >= clickPower) {
-              setEnergy(prev => prev - clickPower);
-              setCoins(prev => prev + clickPower);
+          // Сохранение данных при тапе
+          const handleTap = async (e) => {
+            if (energy >= clickPower && userId) {
+              const newEnergy = energy - clickPower;
+              const newCoins = coins + clickPower;
+              
+              setEnergy(newEnergy);
+              setCoins(newCoins);
               setTotalCoins(prev => prev + clickPower);
               setClickAnimation(true);
               setTimeout(() => setClickAnimation(false), 100);
@@ -59,15 +119,50 @@
               setTimeout(() => {
                 setFloatingCoins(prev => prev.filter(coin => coin.id !== id));
               }, 1000);
+
+              // Сохранение в БД
+              try {
+                await fetch(`${API_URL}/api/user/${userId}/tap`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    coins: newCoins,
+                    energy: newEnergy,
+                    clickPower: clickPower
+                  })
+                });
+              } catch (error) {
+                console.error('Error saving tap:', error);
+              }
             }
           };
 
-          const upgradeBoost = () => {
+          // Улучшение буста
+          const upgradeBoost = async () => {
             const cost = boostLevel * 1000;
-            if (coins >= cost) {
-              setCoins(prev => prev - cost);
-              setBoostLevel(prev => prev + 1);
-              setClickPower(prev => prev + 1);
+            if (coins >= cost && userId) {
+              const newCoins = coins - cost;
+              const newBoostLevel = boostLevel + 1;
+              const newClickPower = clickPower + 1;
+              
+              setCoins(newCoins);
+              setBoostLevel(newBoostLevel);
+              setClickPower(newClickPower);
+
+              // Сохранение в БД
+              try {
+                await fetch(`${API_URL}/api/user/${userId}/upgrade`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    coins: newCoins,
+                    boostLevel: newBoostLevel,
+                    clickPower: newClickPower
+                  })
+                });
+              } catch (error) {
+                console.error('Error saving upgrade:', error);
+              }
             }
           };
 
@@ -80,13 +175,23 @@
             }
           };
 
-          const leaderboard = [
-            { name: 'CryptoKing', coins: 1500000 },
-            { name: 'MoonLambo', coins: 980000 },
-            { name: 'DiamondHands', coins: 750000 },
-            { name: 'ToTheMoon', coins: 520000 },
-            { name: 'HODLer', coins: 420000 },
-          ];
+          // Загрузка лидерборда при открытии вкладки
+          useEffect(() => {
+            if (activeTab === 'leaders') {
+              loadLeaderboard();
+            }
+          }, [activeTab]);
+
+          if (loading) {
+            return (
+              <div className="min-h-screen bg-gradient-to-b from-purple-900 via-blue-900 to-black text-white flex items-center justify-center">
+                <div className="text-center">
+                  <Coins />
+                  <p className="mt-4">Загрузка...</p>
+                </div>
+              </div>
+            );
+          }
 
           return (
             <div className="min-h-screen bg-gradient-to-b from-purple-900 via-blue-900 to-black text-white">
@@ -242,7 +347,7 @@
                       Топ майнеров
                     </h2>
                     <div className="space-y-2">
-                      {leaderboard.map((player, index) => (
+                      {leaderboard.length > 0 ? leaderboard.slice(0, 10).map((player, index) => (
                         <div key={index} className="bg-purple-900 bg-opacity-50 p-3 rounded-lg flex justify-between items-center">
                           <div className="flex items-center gap-3">
                             <div className={`text-2xl ${
@@ -253,12 +358,15 @@
                               #{index + 1}
                             </div>
                             <div>
-                              <div className="font-bold">{player.name}</div>
-                              <div className="text-xs text-purple-300">{player.coins.toLocaleString()} $BIT</div>
+                              <div className="font-bold">{player.username || 'Игрок'}</div>
+                              <div className="text-xs text-purple-300">{player.total_coins.toLocaleString()} $BIT</div>
                             </div>
                           </div>
+                          {index < 3 && <Trophy />}
                         </div>
-                      ))}
+                      )) : (
+                        <p className="text-center text-purple-300 py-4">Пока нет игроков</p>
+                      )}
                     </div>
                   </div>
                 )}
@@ -277,7 +385,7 @@
                       <div className="bg-purple-900 bg-opacity-50 p-4 rounded-lg mb-4">
                         <p className="text-xs text-purple-300 mb-2">Твоя реферальная ссылка:</p>
                         <div className="bg-black bg-opacity-30 p-2 rounded text-xs break-all mb-2">
-                          t.me/BitTapBot?start=ref123456
+                          t.me/YourBot?start=ref{userId}
                         </div>
                         <button className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all">
                           Копировать ссылку
@@ -303,10 +411,6 @@
         const container = document.getElementById('root');
         const root = ReactDOM.createRoot(container);
         root.render(<BitTapGame />);
-        
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
     </script>
 </body>
 </html>
