@@ -215,15 +215,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`BitTap bot running on port ${PORT}`);
 });
-```
-
-5. Нажмите **Commit changes** → **Commit changes**
-
----
-
-После этого Railway автоматически пересоберёт проект (подождите 1-2 минуты).
-
-Затем проверьте логи снова - ошибка должна исчезнуть, и вы увидите:
-```
-BitTap bot running on port 3000
-Database initialized successfully
