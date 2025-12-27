@@ -68,7 +68,8 @@ async function checkSubscription(userId) {
     return ['member', 'administrator', 'creator'].includes(member.status);
   } catch (error) {
     console.error('Subscription check error:', error);
-    return false;
+    // ВРЕМЕННО: разрешаем доступ всем при ошибке проверки
+    return true;
   }
 }
 
