@@ -20,10 +20,11 @@
         const API_URL = 'https://bittap-bot-production.up.railway.app';
         
         const Zap = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>;
-        const Trophy = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
-        const Users = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
         const Gift = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>;
-        const TrendingUp = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>;
+        const Users = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+        const Rocket = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>;
+        const Battery = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><line x1="6" x2="6" y1="11" y2="13"/><line x1="10" x2="10" y1="11" y2="13"/><line x1="14" x2="14" y1="11" y2="13"/></svg>;
+        const Clock = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
         const CoinIcon = () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>;
 
         function BitTapGame() {
@@ -34,11 +35,13 @@
           const [boostLevel, setBoostLevel] = useState(1);
           const [energy, setEnergy] = useState(1000);
           const [maxEnergy, setMaxEnergy] = useState(1000);
+          const [energyLevel, setEnergyLevel] = useState(1);
+          const [autoMiningLevel, setAutoMiningLevel] = useState(0);
+          const [autoMiningEnd, setAutoMiningEnd] = useState(null);
           const [dailyBonusClaimed, setDailyBonusClaimed] = useState(false);
           const [activeTab, setActiveTab] = useState('mine');
           const [clickAnimation, setClickAnimation] = useState(false);
           const [floatingCoins, setFloatingCoins] = useState([]);
-          const [leaderboard, setLeaderboard] = useState([]);
           const [loading, setLoading] = useState(true);
 
           const formatNumber = (num) => {
@@ -48,6 +51,19 @@
             if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
             if (n >= 1e3) return (n / 1e3).toFixed(2) + 'K';
             return n.toLocaleString();
+          };
+
+          const formatTime = (endTime) => {
+            if (!endTime) return '00:00:00';
+            const now = new Date();
+            const end = new Date(endTime);
+            const diff = Math.max(0, end - now);
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
           };
 
           useEffect(() => {
@@ -80,21 +96,24 @@
                 setClickPower(Number(data.click_power) || 1);
                 setBoostLevel(Number(data.boost_level) || 1);
                 setEnergy(Number(data.energy) || 1000);
+                setMaxEnergy(Number(data.max_energy) || 1000);
+                setEnergyLevel(Number(data.energy_level) || 1);
+                setAutoMiningLevel(Number(data.auto_mining_level) || 0);
+                
+                if (data.auto_mining_end) {
+                  setAutoMiningEnd(data.auto_mining_end);
+                }
+                
+                if (data.auto_mining_completed && data.auto_mining_earned > 0) {
+                  alert(`Авто-майнинг завершён! Получено ${data.auto_mining_earned} $BIT`);
+                  setCoins(Number(data.coins));
+                  setTotalCoins(Number(data.total_coins));
+                }
               }
               setLoading(false);
             } catch (error) {
               console.error('Error loading user data:', error);
               setLoading(false);
-            }
-          };
-
-          const loadLeaderboard = async () => {
-            try {
-              const response = await fetch(`${API_URL}/api/leaderboard`);
-              const data = await response.json();
-              setLeaderboard(data);
-            } catch (error) {
-              console.error('Error loading leaderboard:', error);
             }
           };
 
@@ -104,6 +123,20 @@
             }, 1000);
             return () => clearInterval(interval);
           }, [maxEnergy]);
+
+          useEffect(() => {
+            if (autoMiningEnd) {
+              const interval = setInterval(() => {
+                const now = new Date();
+                const end = new Date(autoMiningEnd);
+                if (now >= end) {
+                  claimAutoMining();
+                  clearInterval(interval);
+                }
+              }, 1000);
+              return () => clearInterval(interval);
+            }
+          }, [autoMiningEnd]);
 
           const handleTap = async (e) => {
             if (energy >= clickPower && userId) {
@@ -170,6 +203,95 @@
             }
           };
 
+          const upgradeEnergy = async () => {
+            const cost = Number(energyLevel) * 2000;
+            if (Number(coins) >= cost && userId) {
+              const newCoins = Number(coins) - cost;
+              const newEnergyLevel = Number(energyLevel) + 1;
+              const newMaxEnergy = 1000 + (newEnergyLevel - 1) * 500;
+              
+              setCoins(newCoins);
+              setEnergyLevel(newEnergyLevel);
+              setMaxEnergy(newMaxEnergy);
+              setEnergy(newMaxEnergy);
+
+              try {
+                await fetch(`${API_URL}/api/user/${userId}/upgrade-energy`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    coins: newCoins,
+                    energyLevel: newEnergyLevel,
+                    maxEnergy: newMaxEnergy
+                  })
+                });
+              } catch (error) {
+                console.error('Error saving energy upgrade:', error);
+              }
+            }
+          };
+
+          const startAutoMining = async () => {
+            if (autoMiningLevel === 0) {
+              alert('Сначала активируйте авто-майнинг (уровень 1)');
+              return;
+            }
+            
+            if (autoMiningEnd) {
+              alert('Авто-майнинг уже запущен!');
+              return;
+            }
+
+            try {
+              const response = await fetch(`${API_URL}/api/user/${userId}/start-auto-mining`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  autoMiningLevel: autoMiningLevel
+                })
+              });
+              
+              const data = await response.json();
+              if (data.success) {
+                setAutoMiningEnd(data.endTime);
+                alert('Авто-майнинг запущен на 8 часов!');
+              }
+            } catch (error) {
+              console.error('Error starting auto mining:', error);
+            }
+          };
+
+          const claimAutoMining = async () => {
+            try {
+              const response = await fetch(`${API_URL}/api/user/${userId}/claim-auto-mining`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+              });
+              
+              const data = await response.json();
+              if (data.success) {
+                setCoins(Number(data.coins));
+                setTotalCoins(Number(data.total_coins));
+                setAutoMiningEnd(null);
+                alert(`Получено ${data.earned} $BIT от авто-майнинга!`);
+              }
+            } catch (error) {
+              console.error('Error claiming auto mining:', error);
+            }
+          };
+
+          const buyAutoMining = async (level) => {
+            const cost = level * 10000;
+            if (Number(coins) >= cost && userId) {
+              const newCoins = Number(coins) - cost;
+              setCoins(newCoins);
+              setAutoMiningLevel(level);
+              alert(`Авто-майнинг уровень ${level} активирован!`);
+            } else {
+              alert('Недостаточно монет!');
+            }
+          };
+
           const claimDailyBonus = () => {
             if (!dailyBonusClaimed) {
               const bonus = 500 * Number(boostLevel);
@@ -178,12 +300,6 @@
               setDailyBonusClaimed(true);
             }
           };
-
-          useEffect(() => {
-            if (activeTab === 'leaders') {
-              loadLeaderboard();
-            }
-          }, [activeTab]);
 
           if (loading) {
             return (
@@ -230,7 +346,7 @@
                 {[
                   { id: 'mine', icon: CoinIcon, label: 'Майнинг' },
                   { id: 'boost', icon: Zap, label: 'Буст' },
-                  { id: 'leaders', icon: Trophy, label: 'Топ' },
+                  { id: 'airdrop', icon: Rocket, label: 'Airdrop' },
                   { id: 'friends', icon: Users, label: 'Друзья' }
                 ].map(tab => (
                   <button
@@ -261,6 +377,23 @@
                         <div className="text-2xl font-bold text-green-400">{formatNumber(totalCoins)}</div>
                       </div>
                     </div>
+
+                    {autoMiningEnd && (
+                      <div className="bg-gradient-to-r from-green-800 to-blue-800 p-3 rounded-xl mb-4 w-full">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Clock />
+                            <span className="font-bold">Авто-майнинг</span>
+                          </div>
+                          <div className="text-yellow-400 font-bold">
+                            {formatTime(autoMiningEnd)}
+                          </div>
+                        </div>
+                        <div className="text-xs text-green-200 mt-1">
+                          Заработаете: {autoMiningLevel * 8} $BIT
+                        </div>
+                      </div>
+                    )}
 
                     <div className="relative">
                       <button
@@ -338,6 +471,26 @@
                         <div className="bg-purple-900 bg-opacity-50 p-4 rounded-lg">
                           <div className="flex justify-between items-center mb-2">
                             <div>
+                              <h3 className="font-bold">Запас энергии</h3>
+                              <p className="text-xs text-purple-300">Уровень {energyLevel}</p>
+                            </div>
+                            <div className="text-right">
+                              <Battery />
+                            </div>
+                          </div>
+                          <p className="text-xs text-purple-200 mb-2">Максимум: {maxEnergy}</p>
+                          <button
+                            onClick={upgradeEnergy}
+                            disabled={coins < energyLevel * 2000}
+                            className="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-bold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:from-blue-600 hover:to-cyan-600 transition-all"
+                          >
+                            Улучшить за {formatNumber(energyLevel * 2000)}
+                          </button>
+                        </div>
+
+                        <div className="bg-purple-900 bg-opacity-50 p-4 rounded-lg">
+                          <div className="flex justify-between items-center mb-2">
+                            <div>
                               <h3 className="font-bold">Ежедневный бонус</h3>
                               <p className="text-xs text-purple-300">+{formatNumber(500 * boostLevel)} монет</p>
                             </div>
@@ -354,48 +507,86 @@
                       </div>
                     </div>
 
-                    <div className="bg-gradient-to-r from-green-800 to-blue-800 p-4 rounded-xl">
-                      <h3 className="font-bold flex items-center gap-2 mb-2">
-                        <TrendingUp />
-                        Скоро доступно:
+                    <div className="bg-gradient-to-r from-green-800 to-emerald-800 p-4 rounded-xl">
+                      <h3 className="font-bold flex items-center gap-2 mb-3">
+                        <Clock />
+                        Авто-майнинг (8 часов)
                       </h3>
-                      <ul className="text-sm text-purple-200 space-y-1">
-                        <li>Авто-майнинг</li>
-                        <li>Турбо-режим</li>
-                        <li>Премиум буст x10</li>
-                        <li>Майнинг-боты</li>
-                      </ul>
+                      
+                      {autoMiningLevel === 0 ? (
+                        <div className="space-y-2">
+                          <button
+                            onClick={() => buyAutoMining(1)}
+                            className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all"
+                          >
+                            Купить уровень 1 за {formatNumber(10000)}
+                          </button>
+                          <p className="text-xs text-green-200">+1 $BIT в час (8 $BIT за 8 часов)</p>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <div className="bg-green-900 bg-opacity-50 p-3 rounded-lg">
+                            <p className="text-sm">Уровень: {autoMiningLevel}</p>
+                            <p className="text-sm">Доход: {autoMiningLevel} $BIT/час</p>
+                          </div>
+                          {!autoMiningEnd ? (
+                            <button
+                              onClick={startAutoMining}
+                              className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-2 px-4 rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all"
+                            >
+                              Запустить авто-майнинг
+                            </button>
+                          ) : (
+                            <button
+                              onClick={claimAutoMining}
+                              disabled={new Date() < new Date(autoMiningEnd)}
+                              className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-2 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:from-yellow-600 hover:to-orange-600 transition-all"
+                            >
+                              Забрать награду
+                            </button>
+                          )}
+                          <button
+                            onClick={() => buyAutoMining(autoMiningLevel + 1)}
+                            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white font-bold py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all"
+                          >
+                            Улучшить до уровня {autoMiningLevel + 1} за {formatNumber((autoMiningLevel + 1) * 10000)}
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
 
-                {activeTab === 'leaders' && (
-                  <div className="bg-gradient-to-r from-purple-800 to-blue-800 p-4 rounded-xl">
-                    <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                      <Trophy />
-                      Топ майнеров
-                    </h2>
-                    <div className="space-y-2">
-                      {leaderboard.length > 0 ? leaderboard.slice(0, 10).map((player, index) => (
-                        <div key={index} className="bg-purple-900 bg-opacity-50 p-3 rounded-lg flex justify-between items-center">
-                          <div className="flex items-center gap-3">
-                            <div className={`text-2xl ${
-                              index === 0 ? 'text-yellow-400' :
-                              index === 1 ? 'text-gray-300' :
-                              index === 2 ? 'text-orange-400' : 'text-purple-400'
-                            }`}>
-                              #{index + 1}
-                            </div>
-                            <div>
-                              <div className="font-bold">{player.username || 'Игрок'}</div>
-                              <div className="text-xs text-purple-300">{formatNumber(player.total_coins)} $BIT</div>
-                            </div>
-                          </div>
-                          {index < 3 && <Trophy />}
+                {activeTab === 'airdrop' && (
+                  <div className="bg-gradient-to-r from-purple-800 to-pink-800 p-6 rounded-xl">
+                    <div className="text-center">
+                      <Rocket className="mx-auto mb-4 text-yellow-400" size={64} />
+                      <h2 className="text-2xl font-bold mb-4">Airdrop $BIT</h2>
+                      <div className="bg-purple-900 bg-opacity-50 p-4 rounded-lg mb-4">
+                        <p className="text-lg mb-2">Скоро раздача токенов!</p>
+                        <p className="text-sm text-purple-200 mb-4">
+                          Все активные игроки получат реальные токены $BIT после листинга на биржах
+                        </p>
+                        <div className="text-yellow-400 text-xl font-bold">
+                          Дата будет объявлена
                         </div>
-                      )) : (
-                        <p className="text-center text-purple-300 py-4">Пока нет игроков</p>
-                      )}
+                      </div>
+                      
+                      <div className="bg-gradient-to-r from-blue-900 to-purple-900 p-4 rounded-lg">
+                        <h3 className="font-bold mb-2">Как увеличить свой Airdrop:</h3>
+                        <ul className="text-sm text-left space-y-2 text-purple-200">
+                          <li>Майните больше монет</li>
+                          <li>Приглашайте друзей</li>
+                          <li>Прокачивайте буст</li>
+                          <li>Используйте авто-майнинг</li>
+                          <li>Заходите каждый день за бонусом</li>
+                        </ul>
+                      </div>
+
+                      <div className="mt-4 p-4 bg-yellow-900 bg-opacity-30 rounded-lg border-2 border-yellow-500">
+                        <p className="text-sm font-bold">Ваш текущий баланс:</p>
+                        <p className="text-3xl font-bold text-yellow-400">{formatNumber(totalCoins)} $BIT</p>
+                      </div>
                     </div>
                   </div>
                 )}
